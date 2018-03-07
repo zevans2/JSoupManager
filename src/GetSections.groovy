@@ -34,7 +34,7 @@ class GetSections {
 
                             //Full row
                             section = new Section()
-                            section.department = semester
+                            section.term = semester.toString()
                             section.crn = cells.get(0).text().trim()
 
                             //Split up the courseID

@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+    <title>MWSU :: Missouri Western State University</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.16.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="trans_banner/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.slider.css" rel="stylesheet" />
+    <!--<link rel="stylesheet" type="text/css" href="/css/custom.css" rel="stylesheet" />-->
+    <link rel="stylesheet" type="text/css" href="schedule.css" rel="stylesheet" />
+
+    <!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="/css/ie/megamenu_ie.css" />
+    <![endif]-->
+    <!--[if lt IE 7]><script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+    <![endif]-->
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="/css/ie/mwsu-ie.css" /><![endif]-->
+
+    <!--<script type="text/javascript" src="/js/clearfield.js"></script>-->
+    <script type="text/javascript" src="js/jquery.js"></script><!-- jQuery -->
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.compatibility.js"></script>
+    <script type="text/javascript" src="js/jquery.slider.min.js"></script>
+    <script type="text/javascript" src="js/megamenu_plugins.js"></script><!-- Mega Menu Plugins (scroller, form, hoverIntent) -->
+    <script type="text/javascript" src="js/megamenu.js"></script><!-- Mega Menu Script -->
+    <script type="text/javascript" src="js/jquery.ui.js"></script>
+    <script type="text/javascript" src="js/jquery.nivo.slider.pack.js"></script>
+    <script type="text/javascript" src="trans_banner/trans-banner.min.js"></script>
+    <script type="text/javascript" src="js/modernizr.js"></script>
+    <script type="text/javascript" src="js/flowplayer/flowplayer-3.2.9.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $( "#accordion" ).accordion({
+                "event": "mouseover"
+            });
+
+            $("#accordion").accordion("option", "icons", { 'header': 'ui-icon-triangle-1-w', 'headerSelected': 'ui-icon-triangle-1-s'});
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function($){
+            $('.megamenu').megaMenuReloaded({
+                menu_speed_show : 500, // Time (in milliseconds) to show a drop down
+                menu_speed_hide : 500, // Time (in milliseconds) to hide a drop down
+                menu_speed_delay : 500, // Time (in milliseconds) before showing a drop down
+                menu_effect : 'hover_slide', // Drop down effect, choose between 'hover_fade', 'hover_slide', 'click_fade', 'click_slide', 'open_close_fade', 'open_close_slide'
+                menu_click_outside : 0, // Clicks outside the drop down close it (1 = true, 0 = false)
+                menu_show_onload : 0, // Drop down to show on page load (type the number of the drop down, 0 for none)
+                menubar_trigger : 0 // Show the menu trigger (button to show / hide the menu bar), only for the fixed version of the menu (1 = show, 0 = hide)
+            });
+        });
+    </script>
+
+    <link type="text/css" href="css/scrollable-horizontal.css" rel="stylesheet" />
+    <link type="text/css" href="css/scrollable-buttons.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery.tools.min.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $(".scrollable").scrollable({circular: true});
+        });
+    </script>
+    <style type="text/css">
+        /*<!--*/
+        .ui-dialog-titlebar-close {
+            visibility: hidden;
+        }
+        #maincontent { margin-top: 2em; }
+        /*-->*/
+    </style>
+</head>
+<body>
+<script type="text/javascript" src="/clearfield.js"></script>
+<script language='JavaScript1.1' src='http://pixel.mathtag.com/event/js?mt_id=314533&mt_adid=114176&v1=&v2=&v3=&s1=&s2=&s3='></script>
+<!--
+NOTES:
+	* "autocomplete" attribute is invalid; set in javascript to avoid validation errors
+	* always use relative paths when possible - CHANGE THIS LATER(JAKE)-
+	*
+<form id="searchform" method="get" action="http://www.missouriwestern.edu/google_search.asp" autocomplete="off">
+-->
+
+<table border="0" width="100%" cellspacing="0" cellpadding="6" style="background-color:black;">
+    <tr>
+        <td>
+            <table align="center" border="0" width="970" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="509" style="width: 970px" class="style1">
+                        <a href="http://www.missouriwestern.edu">
+                            <img border="0" src="images/header/logo.png" width="404" height="76" alt="Missouri Western State University" /></a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<div id="maincontent">
+
+    <h1>MWSU Course Search</h1>
+    <ul class="schedulemenu">
+        <li>
+
+            <a href="Default.asp?page=login"><strong>View Instructor Ratings</strong></a>
+
+        </li>
+        <li><a href="Default.asp">Search Courses</a></li>
+        <li>
+            <a target="_blank" href="http://www.missouriwestern.edu/acadaff/calendars/">Academic Calendar</a></li>
+        <li>
+            <a target="_blank" href="http://www.missouriwestern.edu/businessoffice/">Tuition &amp; Fees</a></li>
+        <li><a target="_blank" href="http://missouriwestern.bncollege.com">Buy Textbooks</a></li>
+        <li><a target="_blank" href="http://catalog.missouriwestern.edu/">Course Catalog</a></li>
+        <li><a target="_blank" href="http://goldlink.missouriwestern.edu">Goldlink (Student Portal)</a></li>
+        <li><a href="http://www.missouriwestern.edu/registrar/registration/" target="_blank">Registration Guides</a></li>
+        <li><a href="https://forms.missouriwestern.edu/admissions/pdf/GeneralStudies.pdf" target="_blank">General Studies Requirements</a></li>
+        <li>
+            <a target="_blank" href="https://forms.missouriwestern.edu/registrar/ug/">Major/Minor Forms, Program of Study Forms &amp; 4-Year Plans</a></li>
+    </ul>
+
+    <form id="semesterform" action="https://aps2.missouriwestern.edu:443/schedule/Default.asp?tck=201910" method="get">
+        <fieldset id="semesterQuery">
+            <legend>Choose Semester</legend>
+            <p><strong></strong></p>
+
+            <label for="tck">Semester</label>
+            <select name="tck" id="tck">
+
+                <option selected="selected" value="201910">Fall 2018</option>
+
+                <option  value="201830">Summer 2018</option>
+
+                <option  value="201820">Spring 2018</option>
+
+                <option  value="201810">Fall 2017</option>
+
+            </select>
+            <input style="visibility: hidden;" type="submit" value="Select" />
+
+        </fieldset>
+    </form>
+    <form id="scheduleform" action="https://aps2.missouriwestern.edu:443/schedule/Default.asp?tck=201910" method="post" accept-charset="utf-8">
+        <fieldset id="searchQuery">
+            <legend>Search Courses</legend>
+            <div class="field">
+                <label for="course_number">Course Number</label>
+                <input type="text" id="course_number" name="course_number" value="" placeholder="BIO101" />
+                <span><em>e.g.</em>, BIO or BIO101</span>
+            </div>
+            <div class="field">
+                <label for="subject">OR Subject</label>
+                <select name="subject" id="subject">
+                    <option value="ALL">All Subjects</option>
+
+                    <option value="ACC">Accounting</option>
+
+                    <option value="ALH">Allied Health</option>
+
+                    <option value="ACT">Applications of Computer Tech</option>
+
+                    <option value="ADM">Applied Digital Media</option>
+
+                    <option value="MAS">Applied Science</option>
+
+                    <option value="ART">Art</option>
+
+                    <option value="BIO">Biology</option>
+
+                    <option value="CHE">Chemistry</option>
+
+                    <option value="CHI">Chinese</option>
+
+                    <option value="CIN">Cinema</option>
+
+                    <option value="CLS">Clinical Laboratory Science</option>
+
+                    <option value="COM">Communication Studies</option>
+
+                    <option value="CSC">Computer Science</option>
+
+                    <option value="CET">Construction Engineering Techn</option>
+
+                    <option value="CED">Continuing Education   (WI)</option>
+
+                    <option value="LAW">Criminal Justice</option>
+
+                    <option value="DAN">Dance</option>
+
+                    <option value="ESC">Earth Science</option>
+
+                    <option value="ECO">Economics</option>
+
+                    <option value="EDU">Education</option>
+
+                    <option value="EET">Electronics Engineering Techno</option>
+
+                    <option value="EGT">Engineering Technology</option>
+
+                    <option value="ENG">English</option>
+
+                    <option value="EPR">English Public Relations</option>
+
+                    <option value="ETC">English Technical Communicatio</option>
+
+                    <option value="ENT">Entrepreneurship</option>
+
+                    <option value="FIN">Finance</option>
+
+                    <option value="FRE">French</option>
+
+                    <option value="GBA">General Business</option>
+
+                    <option value="GEO">Geography</option>
+
+                    <option value="GER">German</option>
+
+                    <option value="HIF">Health Information Management</option>
+
+                    <option value="HIS">History</option>
+
+                    <option value="HON">Honors Program</option>
+
+                    <option value="HUM">Humanities</option>
+
+                    <option value="ILS">Industrial Life Science</option>
+
+                    <option value="MIM">Information Management</option>
+
+                    <option value="JOU">Journalism</option>
+
+                    <option value="LDR">Leadership</option>
+
+                    <option value="LAT">Legal Assistant</option>
+
+                    <option value="MGT">Management</option>
+
+                    <option value="MET">Manufacturing Engineering Tech</option>
+
+                    <option value="MKT">Marketing</option>
+
+                    <option value="MAT">Mathematics</option>
+
+                    <option value="MTE">Medical Technology</option>
+
+                    <option value="MIL">Military Science</option>
+
+                    <option value="MUS">Music</option>
+
+                    <option value="NUR">Nursing</option>
+
+                    <option value="PHL">Philosophy</option>
+
+                    <option value="PED">Physical Education</option>
+
+                    <option value="PHS">Physical Science</option>
+
+                    <option value="PTA">Physical Therapist Assistant</option>
+
+                    <option value="PHY">Physics</option>
+
+                    <option value="POL">Policing</option>
+
+                    <option value="PSC">Political Science</option>
+
+                    <option value="PSY">Psychology</option>
+
+                    <option value="RDG">Reading</option>
+
+                    <option value="RSM">Recreation Sport Management</option>
+
+                    <option value="REL">Religion</option>
+
+                    <option value="SWK">Social Work</option>
+
+                    <option value="SOC">Sociology</option>
+
+                    <option value="SPA">Spanish</option>
+
+                    <option value="SFM">Sport and Fitness Management</option>
+
+                    <option value="SCM">Supply Chain Management</option>
+
+                    <option value="TSL">Teaching Second Language</option>
+
+                    <option value="THR">Theatre</option>
+
+                    <option value="UNV">University Orientation</option>
+
+                </select>
+            </div>
+            <div class="field">
+                <label for="department">OR Department</label>
+                <select id="department" name="department">
+                    <option value="ALL">All Departments</option>
+
+                    <option value="AF">Academic Affairs</option>
+
+                    <option value="ART">Art</option>
+
+                    <option value="BIO">Biology</option>
+
+                    <option value="BUS">Business</option>
+
+                    <option value="CHE">Chemistry</option>
+
+                    <option value="CST">Communication & Journalism</option>
+
+                    <option value="CSMP">Comp Science, Math & Physics</option>
+
+                    <option value="CJLS">Crim Just, Legal & Soc Work</option>
+
+                    <option value="EPSS">Econ, Pol Science & Sociology</option>
+
+                    <option value="EDU">Education</option>
+
+                    <option value="ET">Engineering Technology</option>
+
+                    <option value="EFLJ">English & Modern Languages</option>
+
+                    <option value="GS">Graduate Studies</option>
+
+                    <option value="HPER">Health, Physical Educ & Recr</option>
+
+                    <option value="HPG">History/Geog & Philos/Religion</option>
+
+                    <option value="HON">Honors Program</option>
+
+                    <option value="MIL">Military Science</option>
+
+                    <option value="MUS">Music</option>
+
+                    <option value="NUR">Nursing & Health Professions</option>
+
+                    <option value="PSY">Psychology</option>
+
+                    <option value="FINE">Theatre, Cinema & Dance</option>
+
+                    <option value="CON">Western Institute</option>
+
+                </select>
+            </div>
+            <div class="field" id="display_closed_field">
+                <input type="checkbox" id="display_closed" name="display_closed" value="yes" checked="checked" />
+                <label class="inline" for="display_closed">Display Closed Sections</label>
+            </div>
+            <span class="list_header">Course Type</span>
+            <div class="field" id="course_type_field">
+                <label>On-Campus</label>
+                <ul>
+                    <li>
+                        <input type="radio" id="course_type_all" name="course_type" value="ALL" checked="checked" />
+                        <label class="inline" for="course_type_all">VIEW ALL</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_graduate" name="course_type" value="GRADUATE" />
+                        <label class="inline" for="course_type_graduate">Graduate Level</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_honors_all" name="course_type" value="HONORS_ALL" />
+                        <label class="inline" for="course_type_honors_all">All Honors</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_honors_gs" name="course_type" value="HONORS_GS" />
+                        <label class="inline" for="course_type_honors_gs">General Studies Honors</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_weekend" name="course_type" value="WEEKEND" />
+                        <label class="inline" for="course_type_weekend">Weekend</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_night" name="course_type" value="NIGHT" />
+                        <label class="inline" for="course_type_night">Night (After 4:30pm)</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_kc_northland" name="course_type" value="KC_NORTHLAND" />
+                        <label class="inline" for="course_type_kc_northland">KC Northland</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_penn_valley" name="course_type" value="PENN_VALLEY" />
+                        <label class="inline" for="course_type_penn_valley">Penn Valley Campus</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_study_away" name="course_type" value="STUDY_AWAY" />
+                        <label class="inline" for="course_type_study_away">Study Away</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_off_schedule" name="course_type" value="OFF_SCHEDULE" />
+                        <label class="inline" for="course_type_off_schedule">Off-Schedule</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_8week" name="course_type" value="8WEEK" />
+                        <label class="inline" for="course_type_8week">8-Week On Campus</label>
+                    </li>
+                </ul>
+                <label>Online Courses</label>
+                <ul>
+                    <li>
+                        <input type="radio" id="course_type_distance_ed" name="course_type" value="DISTANCE_ED" />
+                        <label class="inline" for="course_type_distance_ed">Distance Education (all)</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_online_100" name="course_type" value="ONLINE_100" />
+                        <label class="inline" for="course_type_online_100">Online 100%</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_online_70_99" name="course_type" value="ONLINE_70_99" />
+                        <label class="inline" for="course_type_online_70_99">Online 70-99%</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_online_1_69" name="course_type" value="ONLINE_1_69" />
+                        <label class="inline" for="course_type_online_1_69">Online 1-69%</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="course_type_online_8week" name="course_type" value="ONLINE_8WEEK" />
+                        <label class="inline" for="course_type_online_8week">8-Week Online</label>
+                    </li>
+                </ul>
+
+            </div>
+        </fieldset>
+        <input type="submit" value="Search" />
+        <input type="reset" id="btnReset" name="btnReset" value="Reset" />
+    </form>
+    <script type="text/javascript">
+        //<!--
+        $(function() {
+            $("#tck").bind("change", tck_changed);
+        });
+        function tck_changed(e) {
+            $("#loading").dialog('open');
+            document.forms["semesterform"].submit();
+        }
+        //-->
+    </script>
+
+</div>
+
+<div id="loading" title="Loading...">Loading, please wait...</div>
+<script type="text/javascript">
+    //<!--
+    $(function() {
+        $("#loading").dialog({'modal': true, 'closeOnEscape': false, 'draggable': false, 'resizable': false, 'autoOpen': false });
+    });
+    //-->
+</script>
+</body>

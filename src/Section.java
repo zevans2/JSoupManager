@@ -21,6 +21,7 @@ public class Section {
     private String messages;
     private int maximumEnrollment;
     private int seatsAvailable;
+    private String url;
 
 
     public Section(){}//Constructor
