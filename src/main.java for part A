@@ -18,9 +18,6 @@ public class Midterm {
         String website = "https://aps2.missouriwestern.edu/schedule/Default.asp?tck=201910";
         String connectStmt = "jdbc:sqlite:Schedule.db";
 
-        /*ArrayList<Schedule> mySubjects = new ArrayList<>();
-        ArrayList<Schedule> myDepartments = new ArrayList<>();*/
-
         try {
             conn = DriverManager.getConnection(connectStmt);
             stmt = conn.createStatement();
@@ -40,6 +37,7 @@ public class Midterm {
                     "B = Erase and build department table.\n" +
                     "C = Print subject table.\n" +
                     "D = Print department table.\n" +
+                    "E = Print report of discipline by department" +
                     "Q = Quit.\n");
             System.out.println("Please type in your choice:");
             Scanner input = new Scanner(System.in);
@@ -47,16 +45,31 @@ public class Midterm {
             ch = (choice.length() > 0)? choice.charAt(0): 'x';
             switch(ch){
                 case 'A':
-                    eraseAndBuildSubjects(website);
+                    eraseAndBuilddisciplines(website);
                     break;
                 case 'B':
                     eraseAndBuildDepartments(website);
                     break;
                 case 'C':
-                    printSubjectTable();
+                    printDisciplineTable();
                     break;
                 case 'D':
                     printDepartmentTable();
+                    break;
+                case 'E':
+                    String topic;
+                    do{
+                        System.out.println("Please enter in the abbreviation of the department you want to search.");
+                        System.out.println("Enter R if ou want to stop searching");
+                        Scanner dep_abbrev = new Scanner(System.in);
+                        topic = dep_abbrev.next().toUpperCase().trim();
+                        switch(topic){
+                            case "R":
+                                break;
+                            default:
+                                printDisciplinesByDepartment(website, topic);
+                        }
+                    }while(!topic.equals("R"));
                     break;
                 case 'Q':
                     break;
@@ -66,26 +79,27 @@ public class Midterm {
         }while(ch != 'Q');
     }
 
-    public static void eraseAndBuildSubjects(String website){
+    public static void eraseAndBuilddisciplines(String website){
         try {
-            stmt.execute("delete from subjects");
+            stmt.execute("delete from disciplines");
 
             Document doc = Jsoup.connect(website).get();
             Elements subject = doc.select("select#subject > option");
 
             for(Element option: subject){
-                String sub_abbrev = option.attr("value");
-                String sub_name = option.select("[value]").text();
-                stmt.executeUpdate("insert into subjects(sub_abbrev, sub_name) values('" + sub_abbrev + "', '"  + sub_name +"')");
+                String dis_abbrev = option.attr("value");
+                String dis_name = option.select("[value]").text();
+                String dep_name = matchDepartment(website, dis_abbrev);
+                stmt.executeUpdate("insert into disciplines(dis_abbrev, dis_name, dep_abbrev) values('" + dis_abbrev + "', '"  + dis_name + "', '" + dep_name + "')");
             }
 
-            stmt.execute("delete from subjects where sub_abbrev like 'ALL'");
-            stmt.execute("delete from subjects where sub_name like 'ALL Subjects'");
+            stmt.execute("delete from disciplines where dis_abbrev like 'ALL'");
+            stmt.execute("delete from disciplines where dis_name like 'ALL disciplines'");
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Erasing and building subjects table successful.");
+        System.out.println("Erasing and building disciplines table successful.");
     }
 
     public static void eraseAndBuildDepartments(String website){
@@ -110,24 +124,24 @@ public class Midterm {
         System.out.println("Erasing and building departments table successful.");
     }
 
-    public static void printSubjectTable(){
+    public static void printDisciplineTable(){
         try {
-            stmt.execute("select * from subjects");
+            stmt.execute("select * from disciplines");
             resultSet = stmt.getResultSet();
 
             System.out.println("\nSUBJECT TABLE");
-            System.out.println("SUB_ABBREV      SUB_NAME");
+            System.out.println("dis_abbrev      dis_name");
 
             while(resultSet.next()) {
-                String abbrev = resultSet.getString("sub_abbrev");
-                String name = resultSet.getString("sub_name");
+                String abbrev = resultSet.getString("dis_abbrev");
+                String name = resultSet.getString("dis_name");
                 System.out.printf("%-15s %s\n", abbrev, name);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Printing subjects table complete.");
+        System.out.println("Printing disciplines table complete.");
     }
 
     public static void printDepartmentTable(){
@@ -149,27 +163,84 @@ public class Midterm {
 
         System.out.println("Printing departments table complete.");
     }
+
+    public static void printDisciplinesByDepartment(String website, String dep_abbrev){
+        try {
+            stmt.execute("select dep_name from departments where dep_abbrev like '" + dep_abbrev + "')");
+            resultSet = stmt.getResultSet();
+            while(resultSet.next()){
+                String dep_name = resultSet.getString("dep_name");
+                System.out.println(dep_abbrev + " - " + dep_name);
+            }
+            stmt.execute("select dis_abbrev, dis_name, dep_abbrev from disciplines where dep_abbrev like '" + dep_abbrev + "')");
+            resultSet = stmt.getResultSet();
+            while(resultSet.next()){
+                String dis_abbrev = resultSet.getString("dis_abbrev");
+                String dis_name = resultSet.getString("dis_name");
+                System.out.printf("\t%s - %s\n", dis_abbrev, dis_name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList departmentSearch(String website, String dep_name){
+        ArrayList<String> myDis = new ArrayList<>();
+        Document doc = null;
+        org.jsoup.Connection.Response response = null;
+        try {
+            response = Jsoup.connect(website)
+                    .timeout(60 * 1000)
+                    .method(org.jsoup.Connection.Method.POST)
+                    .data("course_number", "")
+                    .data("subject", "ALL")
+                    .data("department", dep_name)
+                    .data("display_closed", "yes")
+                    .data("course_type", "ALL")
+                    .followRedirects(true)
+                    .execute();
+            doc = response.parse();
+            Elements  rows = doc.select("tr");
+            for(Element tr: rows){
+                String className = rows.attr("class");
+                Elements cell = rows.select("td");
+                if(className.equals("list_row")){
+                    String dis_abbrev = cell.get(1).text().trim();
+                    myDis.add(dis_abbrev.substring(0, 3));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return myDis;
+    }
+
+    public static ArrayList departmentToArrayList(String website) {
+        ArrayList<String> myDepartment = new ArrayList<>();
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(website).get();
+            Elements department = doc.select("select#department > option");
+
+            for (Element option : department) {
+                String dep_name = option.select("[value]").text();
+                myDepartment.add(dep_name);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return myDepartment;
+    }
+
+    public static String matchDepartment(String website, String dis_abbrev){
+        String dep_abbrev = null;
+        for(int i=0; i<departmentToArrayList(website).size(); i++){
+            for(int j=0; j<departmentSearch(website, (String)departmentToArrayList(website).get(i)).size(); j++){
+                if(dis_abbrev.equals(departmentSearch(website, (String)departmentToArrayList(website).get(i)).get(j))){
+                    dep_abbrev = (String)departmentToArrayList(website).get(i);
+                }
+            }
+        }
+        return dep_abbrev;
+    }
 }
-
-/*abstract class College{
-    public abstract String getAbbrev();
-    public abstract String getName();
-}
-
-class Schedule extends College{
-    protected String abbrev;
-    protected String name;
-
-    public Schedule(String abbrev, String name){
-        this.abbrev = abbrev;
-        this.name = name;
-    }
-
-    public String getAbbrev() {
-        return abbrev;
-    }
-
-    public String getName() {
-        return name;
-    }
-}*/
