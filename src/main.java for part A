@@ -3,9 +3,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Midterm {
@@ -14,22 +16,14 @@ public class Midterm {
     static Statement stmt;
     static ResultSet resultSet;
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
         String website = "https://aps2.missouriwestern.edu/schedule/Default.asp?tck=201910";
         String connectStmt = "jdbc:sqlite:Schedule.db";
 
-        try {
-            conn = DriverManager.getConnection(connectStmt);
-            stmt = conn.createStatement();
-
-            menu(website);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        menu(website, connectStmt);
     }
 
-    public static void menu(String website){
+    public static void menu(String website, String connectStmt){
         char ch;
         do{
             System.out.println("\nMENU");
@@ -37,7 +31,7 @@ public class Midterm {
                     "B = Erase and build department table.\n" +
                     "C = Print subject table.\n" +
                     "D = Print department table.\n" +
-                    "E = Print report of discipline by department" +
+                    "E = Print report of discipline by department\n" +
                     "Q = Quit.\n");
             System.out.println("Please type in your choice:");
             Scanner input = new Scanner(System.in);
@@ -45,16 +39,16 @@ public class Midterm {
             ch = (choice.length() > 0)? choice.charAt(0): 'x';
             switch(ch){
                 case 'A':
-                    eraseAndBuilddisciplines(website);
+                    eraseAndBuilddisciplines(website, connectStmt);
                     break;
                 case 'B':
-                    eraseAndBuildDepartments(website);
+                    eraseAndBuildDepartments(website, connectStmt);
                     break;
                 case 'C':
-                    printDisciplineTable();
+                    printDisciplineTable(connectStmt);
                     break;
                 case 'D':
-                    printDepartmentTable();
+                    printDepartmentTable(connectStmt);
                     break;
                 case 'E':
                     String topic;
@@ -67,7 +61,7 @@ public class Midterm {
                             case "R":
                                 break;
                             default:
-                                printDisciplinesByDepartment(website, topic);
+                                printDisciplinesByDepartment(topic, connectStmt);
                         }
                     }while(!topic.equals("R"));
                     break;
@@ -79,8 +73,10 @@ public class Midterm {
         }while(ch != 'Q');
     }
 
-    public static void eraseAndBuilddisciplines(String website){
+    public static void eraseAndBuilddisciplines(String website, String connectStmt){
         try {
+            conn = DriverManager.getConnection(connectStmt);
+            stmt = conn.createStatement();
             stmt.execute("delete from disciplines");
 
             Document doc = Jsoup.connect(website).get();
@@ -95,6 +91,7 @@ public class Midterm {
 
             stmt.execute("delete from disciplines where dis_abbrev like 'ALL'");
             stmt.execute("delete from disciplines where dis_name like 'ALL disciplines'");
+            conn.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -102,8 +99,10 @@ public class Midterm {
         System.out.println("Erasing and building disciplines table successful.");
     }
 
-    public static void eraseAndBuildDepartments(String website){
+    public static void eraseAndBuildDepartments(String website, String connectStmt){
         try {
+            conn = DriverManager.getConnection(connectStmt);
+            stmt = conn.createStatement();
             stmt.execute("delete from departments");
 
             Document doc = Jsoup.connect(website).get();
@@ -117,6 +116,7 @@ public class Midterm {
 
             stmt.execute("delete from departments where dep_abbrev like 'ALL'");
             stmt.execute("delete from departments where dep_name like 'ALL Departments'");
+            conn.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -124,8 +124,10 @@ public class Midterm {
         System.out.println("Erasing and building departments table successful.");
     }
 
-    public static void printDisciplineTable(){
+    public static void printDisciplineTable(String connectStmt){
         try {
+            conn = DriverManager.getConnection(connectStmt);
+            stmt = conn.createStatement();
             stmt.execute("select * from disciplines");
             resultSet = stmt.getResultSet();
 
@@ -137,6 +139,7 @@ public class Midterm {
                 String name = resultSet.getString("dis_name");
                 System.out.printf("%-15s %s\n", abbrev, name);
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,8 +147,10 @@ public class Midterm {
         System.out.println("Printing disciplines table complete.");
     }
 
-    public static void printDepartmentTable(){
+    public static void printDepartmentTable(String connectStmt){
         try {
+            conn = DriverManager.getConnection(connectStmt);
+            stmt = conn.createStatement();
             stmt.execute("select * from departments");
             resultSet = stmt.getResultSet();
 
@@ -157,6 +162,7 @@ public class Midterm {
                 String name = resultSet.getString("dep_name");
                 System.out.printf("%-15s %s\n", abbrev, name);
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -164,8 +170,10 @@ public class Midterm {
         System.out.println("Printing departments table complete.");
     }
 
-    public static void printDisciplinesByDepartment(String website, String dep_abbrev){
+    public static void printDisciplinesByDepartment(String dep_abbrev, String connectStmt){
         try {
+            conn = DriverManager.getConnection(connectStmt);
+            stmt = conn.createStatement();
             stmt.execute("select dep_name from departments where dep_abbrev like '" + dep_abbrev + "')");
             resultSet = stmt.getResultSet();
             while(resultSet.next()){
@@ -179,12 +187,14 @@ public class Midterm {
                 String dis_name = resultSet.getString("dis_name");
                 System.out.printf("\t%s - %s\n", dis_abbrev, dis_name);
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static ArrayList departmentSearch(String website, String dep_name){
+        String search = dep_name.toUpperCase().trim();
         ArrayList<String> myDis = new ArrayList<>();
         Document doc = null;
         org.jsoup.Connection.Response response = null;
@@ -194,25 +204,31 @@ public class Midterm {
                     .method(org.jsoup.Connection.Method.POST)
                     .data("course_number", "")
                     .data("subject", "ALL")
-                    .data("department", dep_name)
+                    .data("department", search)
                     .data("display_closed", "yes")
                     .data("course_type", "ALL")
                     .followRedirects(true)
                     .execute();
             doc = response.parse();
-            Elements  rows = doc.select("tr");
-            for(Element tr: rows){
-                String className = rows.attr("class");
-                Elements cell = rows.select("td");
-                if(className.equals("list_row")){
-                    String dis_abbrev = cell.get(1).text().trim();
-                    myDis.add(dis_abbrev.substring(0, 3));
+            Elements course = doc.select("a");
+            for(int i=0; i<course.size(); i++){
+                String dis_abbrev = course.get(i).select("[href]").text().trim();
+                if(dis_abbrev.length() == 6) {
+                    if(isInDisciplineList(dis_abbrev, myDis)) myDis.add(dis_abbrev.substring(0,3));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return myDis;
+    }
+
+    public static boolean isInDisciplineList(String dis_abbrev, ArrayList myDis){
+        boolean result = false;
+        for(int i=0; i<myDis.size(); i++){
+            if(!dis_abbrev.equals(myDis.get(i))) result = true;
+        }
+        return result;
     }
 
     public static ArrayList departmentToArrayList(String website) {
@@ -234,10 +250,15 @@ public class Midterm {
 
     public static String matchDepartment(String website, String dis_abbrev){
         String dep_abbrev = null;
-        for(int i=0; i<departmentToArrayList(website).size(); i++){
-            for(int j=0; j<departmentSearch(website, (String)departmentToArrayList(website).get(i)).size(); j++){
-                if(dis_abbrev.equals(departmentSearch(website, (String)departmentToArrayList(website).get(i)).get(j))){
-                    dep_abbrev = (String)departmentToArrayList(website).get(i);
+        ArrayList<Object> myDep = new ArrayList<>();
+        Collections.addAll(myDep, departmentToArrayList(website));
+        ArrayList<Object> myDis = new ArrayList<>();
+        for(int i=0; i<myDep.size(); i++){
+            myDis.clear();
+            Collections.addAll(myDis, departmentSearch(website, (String)myDep.get(i)));
+            for(int j=0; j<myDis.size(); j++){
+                if(dis_abbrev.equals(myDis.get(j))){
+                    dep_abbrev = (String)myDep.get(i);
                 }
             }
         }
